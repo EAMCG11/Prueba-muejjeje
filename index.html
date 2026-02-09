@@ -423,6 +423,8 @@
   <div class="bg-stickers"></div>
   <div class="floaties" id="floaties"></div>
   <canvas id="confetti"></canvas>
+  <audio id="bgm" src="musica.mp3" preload="auto" loop></audio>
+
 
   <div class="wrap">
     <div class="card">
@@ -521,6 +523,26 @@
     const toTxt = document.getElementById("toTxt");
     const bar = document.getElementById("bar");
     const caption = document.getElementById("caption");
+
+    const bgm = document.getElementById("bgm");
+    let bgmStarted = false;
+
+    async function startBgm(){
+      if (bgmStarted) return;
+      bgmStarted = true;
+      try{
+        bgm.volume = 0.35; // ajusta 0.0 - 1.0
+        await bgm.play();  // funciona luego de interacción
+      }catch(e){
+        // si falló, no hacemos nada (algunos navegadores son mañosos)
+        bgmStarted = false;
+      }
+    }
+
+    // Arrancar música en la primera interacción del usuario
+    window.addEventListener("pointerdown", startBgm, { once:true });
+    window.addEventListener("keydown", startBgm, { once:true });
+
 
     const vDate  = document.getElementById("vDate");
     const vPlace = document.getElementById("vPlace");
@@ -684,6 +706,8 @@
     }
 
     function tap(){
+      startBgm();
+
       if(tired) return;
 
       catWrap.classList.remove("boost");
