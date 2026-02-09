@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Para mamorcito 💖</title>
   <style>
     :root{
@@ -416,6 +416,89 @@
       button{min-width:260px}
       .scene{height:380px}
     }
+
+    /* =========================
+   iPhone / Mobile perfect fit
+   ========================= */
+
+/* evita “saltos” raros en iOS */
+html { -webkit-text-size-adjust: 100%; }
+
+body{
+  min-height: 100svh; /* mejor que 100vh en Safari iOS */
+  padding-top: calc(14px + env(safe-area-inset-top));
+  padding-bottom: calc(18px + env(safe-area-inset-bottom));
+}
+
+/* un poquito más de ancho real en móvil */
+.wrap{ width: min(760px, 96vw); }
+
+/* evita que el card se pase de alto */
+.card{ overflow: hidden; }
+
+/* stage/panel más compacto en móvil */
+@media (max-width: 480px){
+  .header{ padding: 12px 12px 10px; }
+  .pill{ font-size: 13px; padding: 7px 10px; }
+  .title{ font-size: 12px; }
+
+  .stage{ padding: 12px; }
+  .panel{
+    left: 12px; right: 12px; top: 12px;
+    padding: 12px;
+    max-width: 100%;
+    border-radius: 16px;
+  }
+
+  .cute{ font-size: 24px; margin: 4px 0; }
+  .big{ font-size: 20px; margin: 4px 0 6px; }
+  .sub{ font-size: 13px; margin: 0 0 10px; }
+  .small{ font-size: 12px; margin-top: 6px; }
+
+  /* escena del gato adaptativa */
+  .scene{
+    width: min(440px, 92vw);
+    height: clamp(260px, 42svh, 340px);  /* ✅ se ajusta al alto */
+    margin: 8px auto 6px;
+    border-radius: 18px;
+  }
+
+  .catWrap{
+    width: min(220px, 62vw); /* un pelín más chico en iPhone */
+    bottom: 50px;
+  }
+
+  .floor{ bottom: 34px; height: 10px; }
+
+  /* botones más chicos y en 2 columnas si cabe */
+  .actions{ gap: 10px; margin-top: 10px; }
+  button{
+    min-width: 0;
+    width: min(320px, 44vw);
+    padding: 12px 12px;
+    font-size: 14px;
+    border-radius: 14px;
+  }
+
+  /* arena más compacta */
+  .arena{
+    height: 170px;
+    margin-top: 10px;
+  }
+  .no{ min-width: 150px; }
+  .yes{ min-width: 210px; }
+}
+
+/* iPhone muy chico (SE / pantallas bajas) */
+@media (max-width: 380px){
+  .scene{ height: clamp(240px, 40svh, 310px); }
+  button{ width: 92%; }
+  .yes{ min-width: 200px; }
+}
+
+/* mejor toque */
+button { -webkit-tap-highlight-color: transparent; }
+
   </style>
 </head>
 
@@ -613,7 +696,9 @@
       if(!active || !stageEl) return;
 
       // altura real del panel + padding top/bottom de stage
-      const h = active.offsetHeight + 18 + 18;
+      const isMobile = window.matchMedia("(max-width: 480px)").matches;
+        const pad = isMobile ? 12 : 18;
+        const h = active.offsetHeight + pad + pad;
       stageEl.style.height = h + "px";
     }
 
