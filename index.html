@@ -3,50 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>💖 Una invitación para ti</title>
+  <title>Para mamorcito 💖</title>
   <style>
     :root{
-      --bg1:#ffdde8;
-      --bg2:#c9e7ff;
+      /* Paleta celeste / azul */
+      --bg1:#dbeafe;   /* blue-100 */
+      --bg2:#cffafe;   /* cyan-100 */
+      --bg3:#e0f2fe;   /* sky-100 */
       --card:#ffffffcc;
-      --txt:#2a2a2a;
-      --muted:#6b7280;
-      --pink:#ff4d8d;
-      --pink2:#ff8fb8;
-      --shadow: 0 18px 60px rgba(0,0,0,.18);
+      --txt:#0f172a;   /* slate-900 */
+      --muted:#475569; /* slate-600 */
+      --accent:#38bdf8;  /* sky-400 */
+      --accent2:#60a5fa; /* blue-400 */
+      --accent3:#22d3ee; /* cyan-400 */
+      --shadow: 0 18px 60px rgba(2, 6, 23, .18);
       --radius: 22px;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      min-height:100vh;
       font-family:var(--sans);
       color:var(--txt);
-      display:grid;
-      place-items:center;
-      overflow:hidden;
+
+      /* ✅ ahora sí se puede scrollear */
+      overflow-x:hidden;
+      overflow-y:auto;
+
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      padding:22px 0 56px;
+
       background:
-        radial-gradient(1200px 700px at 20% 20%, rgba(255,77,141,.25), transparent 60%),
-        radial-gradient(900px 600px at 80% 70%, rgba(51,214,255,.25), transparent 55%),
+        radial-gradient(1200px 700px at 18% 20%, rgba(56,189,248,.20), transparent 60%),
+        radial-gradient(900px 600px at 82% 75%, rgba(96,165,250,.18), transparent 55%),
+        radial-gradient(900px 600px at 60% 18%, rgba(34,211,238,.14), transparent 58%),
         linear-gradient(135deg, var(--bg1), var(--bg2));
     }
 
     /* fondo cute */
     .bg-stickers{
-      position:absolute; inset:0;
+      position:fixed; inset:0;
       opacity:.18;
       pointer-events:none;
       background-image:
-        radial-gradient(circle at 12% 24%, rgba(255,77,141,.55) 0 2px, transparent 3px),
-        radial-gradient(circle at 78% 18%, rgba(255,77,141,.45) 0 2px, transparent 3px),
-        radial-gradient(circle at 55% 82%, rgba(51,214,255,.5) 0 2px, transparent 3px),
-        radial-gradient(circle at 30% 70%, rgba(255,200,0,.35) 0 2px, transparent 3px);
+        radial-gradient(circle at 12% 24%, rgba(56,189,248,.55) 0 2px, transparent 3px),
+        radial-gradient(circle at 78% 18%, rgba(96,165,250,.45) 0 2px, transparent 3px),
+        radial-gradient(circle at 55% 82%, rgba(34,211,238,.45) 0 2px, transparent 3px),
+        radial-gradient(circle at 30% 70%, rgba(59,130,246,.35) 0 2px, transparent 3px);
       filter: blur(.2px);
     }
 
     .wrap{
-      width:min(720px, 92vw);
+      width:min(760px, 92vw);
       position:relative;
       z-index:2;
     }
@@ -56,16 +67,17 @@
       backdrop-filter: blur(10px);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      border:1px solid rgba(255,77,141,.25);
+      border:1px solid rgba(56,189,248,.25);
       overflow:hidden;
     }
 
     .header{
-      padding:18px 18px 12px;
+      padding:16px 18px 12px;
       display:flex;
       align-items:center;
       gap:12px;
-      border-bottom:1px solid rgba(0,0,0,.06);
+      border-bottom:1px solid rgba(2,6,23,.06);
+      background: linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.45));
     }
     .pill{
       display:inline-flex;
@@ -73,36 +85,57 @@
       gap:8px;
       padding:8px 12px;
       border-radius:999px;
-      background:rgba(255,77,141,.12);
-      border:1px solid rgba(255,77,141,.22);
-      font-weight:700;
+      background:rgba(56,189,248,.14);
+      border:1px solid rgba(56,189,248,.22);
+      font-weight:900;
       font-size:14px;
     }
     .title{
       margin-left:auto;
       font-size:13px;
       color:var(--muted);
-      font-weight:600;
+      font-weight:800;
     }
 
-    /* steps */
+    /* barra estilo “story” */
+    .storybar{
+      height:6px;
+      background: rgba(2,6,23,.06);
+      position:relative;
+      overflow:hidden;
+    }
+    .storybar > span{
+      position:absolute; inset:0;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent3), var(--accent2));
+      transition: width .25s ease;
+    }
+
     .stage{
       position:relative;
       padding:18px;
-      min-height:360px;
-      display:grid;
-      place-items:center;
+      /* ✅ el alto lo pondrá JS según el panel activo */
+      height:auto;
     }
 
+    /* paneles apilados pero con ancho normal */
     .panel{
-      width:100%;
-      max-width:560px;
+      position:absolute;
+      left:18px;
+      right:18px;
+      top:18px;
+
+      width:auto;
+      max-width:600px;
+      margin:0 auto;
+
       padding:18px;
       border-radius:18px;
       background:rgba(255,255,255,.75);
-      border:1px solid rgba(0,0,0,.06);
-      box-shadow: 0 10px 30px rgba(0,0,0,.08);
-      transform: translateY(8px);
+      border:1px solid rgba(2,6,23,.06);
+      box-shadow: 0 10px 30px rgba(2,6,23,.08);
+
+      transform: translateY(10px);
       opacity:0;
       pointer-events:none;
       transition: opacity .35s ease, transform .35s ease;
@@ -113,26 +146,34 @@
       pointer-events:auto;
     }
 
+
+    /* responsive: en pantallas chicas, más alto */
+    @media (max-width:480px){
+      .stage{ min-height: 620px; }
+    }
+
     .big{
       font-size:28px;
       line-height:1.15;
-      margin:2px 0 10px;
+      margin:6px 0 10px;
       text-align:center;
+      font-weight:1000;
+      letter-spacing:-0.02em;
     }
     .sub{
       text-align:center;
       font-size:16px;
       color:var(--muted);
       margin:0 0 14px;
+      font-weight:700;
     }
-
     .cute{
       display:flex;
       justify-content:center;
       align-items:center;
       gap:10px;
       font-size:30px;
-      margin:8px 0 10px;
+      margin:6px 0 6px;
     }
 
     .info{
@@ -141,8 +182,8 @@
       margin:14px 0 6px;
       padding:12px 12px;
       border-radius:14px;
-      background: rgba(255,77,141,.08);
-      border: 1px dashed rgba(255,77,141,.35);
+      background: rgba(56,189,248,.09);
+      border: 1px dashed rgba(56,189,248,.36);
       font-size:15px;
     }
     .row{
@@ -152,9 +193,9 @@
       align-items:center;
       flex-wrap:wrap;
     }
-    .label{color:#444; font-weight:800}
-    .value{color:#111; font-weight:700}
-    .value small{color:var(--muted); font-weight:600}
+    .label{color:#0f172a; font-weight:950}
+    .value{color:#0b1224; font-weight:850}
+    .value small{color:var(--muted); font-weight:700}
 
     .actions{
       margin-top:14px;
@@ -162,51 +203,143 @@
       gap:12px;
       justify-content:center;
       flex-wrap:wrap;
-      position:relative;
     }
 
     button{
       border:none;
       border-radius:16px;
       padding:14px 16px;
-      font-weight:900;
+      font-weight:950;
       font-size:16px;
       cursor:pointer;
       transition: transform .08s ease, filter .12s ease;
       user-select:none;
       touch-action: manipulation;
+      min-width:220px;
     }
     button:active{transform: scale(.98)}
     .btnNext{
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      box-shadow: 0 14px 28px rgba(255,77,141,.28);
-      min-width:220px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      color:#07203a;
+      box-shadow: 0 14px 28px rgba(56,189,248,.25);
     }
     .btnSoft{
       background:#fff;
-      color:#222;
-      border:1px solid rgba(0,0,0,.10);
-      min-width:220px;
+      color:#0f172a;
+      border:1px solid rgba(2,6,23,.10);
+      box-shadow: 0 10px 18px rgba(2,6,23,.06);
+    }
+    button[disabled]{
+      cursor:not-allowed;
+      filter: grayscale(.15) opacity(.8);
     }
 
-    /* pantalla final: area de botones con "no" escapista */
+    /* escena del gato (sin salto) */
+    .scene{
+      position:relative;
+      width:min(440px, 92vw);
+      height:420px;
+      margin: 10px auto 8px;
+      border-radius:24px;
+      background:
+        radial-gradient(320px 240px at 50% 35%, rgba(56,189,248,.20), transparent 70%),
+        radial-gradient(320px 240px at 50% 78%, rgba(34,211,238,.16), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.70), rgba(255,255,255,.25));
+      border:1px solid rgba(56,189,248,.22);
+      overflow:hidden;
+    }
+    .floor{
+      position:absolute;
+      left:50%; bottom:42px;
+      transform:translateX(-50%);
+      width:72%;
+      height:12px;
+      border-radius:999px;
+      background: rgba(56,189,248,.22);
+      box-shadow: 0 12px 44px rgba(56,189,248,.22);
+      filter: blur(.2px);
+    }
+    .spark{
+      position:absolute;
+      inset:-40px;
+      pointer-events:none;
+      background:
+        radial-gradient(420px 260px at 30% 20%, rgba(96,165,250,.20), transparent 60%),
+        radial-gradient(460px 280px at 80% 80%, rgba(34,211,238,.18), transparent 60%);
+      animation: pulse var(--sparkDur, 1.35s) ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{opacity:.55}
+      50%{opacity:1}
+    }
+
+    .catWrap{
+      position:absolute;
+      left:50%;
+      bottom:58px;
+      transform:translateX(-50%);
+      width:min(250px, 70%);
+      display:grid;
+      place-items:center;
+      z-index:2;
+      filter: drop-shadow(0 18px 26px rgba(2,6,23,.22));
+    }
+    /* micro glow al tocar (sin mover el gif) */
+    .catWrap.boost{ animation: glow 220ms ease-out 1; }
+    @keyframes glow{
+      from{ filter: drop-shadow(0 18px 26px rgba(2,6,23,.22)); }
+      to{   filter: drop-shadow(0 24px 38px rgba(56,189,248,.35)); }
+    }
+
+    .cat{
+      width:100%;
+      user-select:none;
+      -webkit-user-drag:none;
+      image-rendering:auto;
+    }
+
+    #catStill{
+      width:100%;
+      height:auto;
+      display:none;
+    }
+
+    /* Partículas dentro de la escena */
+    .floater{
+      position:absolute;
+      left:50%;
+      top:55%;
+      transform:translateX(-50%);
+      font-size:18px;
+      opacity:0;
+      pointer-events:none;
+      filter: drop-shadow(0 10px 14px rgba(2,6,23,.18));
+      animation: pop 900ms ease-out forwards;
+    }
+    @keyframes pop{
+      0%   { transform: translateX(-50%) translateY(0) scale(.8); opacity:0; }
+      15%  { opacity:1; }
+      100% { transform: translateX(calc(-50% + var(--dx))) translateY(var(--dy)) scale(1.25); opacity:0; }
+    }
+
+    /* arena Sí/No */
     .arena{
       position:relative;
       width:100%;
-      max-width:560px;
+      max-width:600px;
       height:170px;
       border-radius:18px;
-      background: rgba(51,214,255,.08);
-      border: 1px solid rgba(51,214,255,.20);
+      background: rgba(34,211,238,.10);
+      border: 1px solid rgba(56,189,248,.22);
       overflow:hidden;
       margin-top:12px;
       padding:12px;
+      touch-action: none;
     }
     .arena .hint{
       text-align:center;
       color:var(--muted);
-      font-weight:700;
+      font-weight:900;
       margin-bottom:10px;
     }
     .yes{
@@ -214,60 +347,60 @@
       left:50%;
       bottom:16px;
       transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--pink), var(--pink2));
-      color:#fff;
-      box-shadow: 0 16px 30px rgba(255,77,141,.30);
+      background: linear-gradient(135deg, var(--accent2), var(--accent3));
+      color:#07203a;
+      box-shadow: 0 16px 30px rgba(56,189,248,.25);
       padding:14px 18px;
       min-width:240px;
+      will-change: transform;
     }
     .no{
       position:absolute;
       left:14px;
-      top:58px;
+      top:72px;
       background:#ffffff;
-      color:#333;
-      border:1px solid rgba(0,0,0,.12);
+      color:#0f172a;
+      border:1px solid rgba(2,6,23,.12);
       padding:12px 14px;
       min-width:170px;
     }
 
-    /* footer progress */
+    .final{ font-size:18px; font-weight:950; margin: 6px 0 0; color:#0b1224; text-align:center; }
+    .small{ font-size:13px; color:var(--muted); margin-top:8px; font-weight:750; text-align:center; }
+
     .footer{
       padding:14px 18px;
       display:flex;
       gap:10px;
       align-items:center;
-      border-top:1px solid rgba(0,0,0,.06);
+      border-top:1px solid rgba(2,6,23,.06);
       background:rgba(255,255,255,.55);
     }
-    .dots{
-      display:flex;
-      gap:8px;
-    }
+    .dots{display:flex; gap:8px;}
     .dot{
       width:10px;height:10px;border-radius:50%;
-      background:rgba(0,0,0,.10);
+      background:rgba(2,6,23,.10);
       transition: transform .25s ease, background .25s ease;
     }
     .dot.on{
-      background: rgba(255,77,141,.55);
+      background: rgba(56,189,248,.70);
       transform: scale(1.2);
     }
-    .footer .small{
+    .footer .small2{
       margin-left:auto;
       color:var(--muted);
-      font-weight:700;
+      font-weight:850;
       font-size:13px;
     }
 
-    /* floating hearts/cats */
-    .floaties{position:absolute; inset:0; pointer-events:none; z-index:1;}
-    .floater{
+    /* floaties global */
+    .floaties{position:fixed; inset:0; pointer-events:none; z-index:1;}
+    .floaterGlobal{
       position:absolute;
       font-size:18px;
       opacity:.9;
       animation: rise linear forwards;
-      filter: drop-shadow(0 10px 18px rgba(255,77,141,.25));
+      filter: drop-shadow(0 10px 18px rgba(56,189,248,.25));
     }
     @keyframes rise{
       from{transform: translateY(0) rotate(0deg); opacity:0}
@@ -275,13 +408,13 @@
       to{transform: translateY(-120vh) rotate(240deg); opacity:0}
     }
 
-    /* confetti */
-    canvas{position:absolute; inset:0; pointer-events:none; z-index:3;}
+    canvas{position:fixed; inset:0; pointer-events:none; z-index:3;}
 
     @media (max-width:480px){
       .big{font-size:24px}
       .arena{height:190px}
-      .yes{min-width:260px}
+      button{min-width:260px}
+      .scene{height:380px}
     }
   </style>
 </head>
@@ -294,67 +427,72 @@
   <div class="wrap">
     <div class="card">
       <div class="header">
-        <div class="pill">💖 Invitación linda</div>
-        <div class="title" id="miniTitle">para la persona más especial ✨</div>
+        <div class="pill">Invitación para Denisse Lorca 💓</div>
+        <div class="title" id="toTxt">para mi amor 💓</div>
       </div>
+      <div class="storybar" aria-hidden="true"><span id="bar"></span></div>
 
       <div class="stage">
 
-        <!-- STEP 1 -->
+        <!-- STEP 1 (gatito) -->
         <section class="panel active" data-step="1">
-          <div class="cute">🐱💗🐱</div>
-          <h1 class="big">Holaaa mi amor 🥺💞</h1>
-          <p class="sub">Tengo algo muy importante que preguntarte…</p>
+          <div class="cute">🐱💖🐱</div>
+          <h1 class="big">oda mamorcitoo 💓</h1>
+          <p class="sub" id="caption">Toca al gatito para que se salte más rápido omg 🙀</p>
+
+          <div class="scene" id="scene">
+            <div class="spark" id="spark"></div>
+
+            <div class="catWrap" id="catWrap">
+              <img class="cat" id="cat" src="cat_transparent.gif" alt="Gatito feliz" />
+              <img class="cat" id="catStill" src="cat_freeze.png" alt="Gatito cansadito" />
+            </div>
+
+            <div class="floor"></div>
+          </div>
+
+          <div class="small">Pregunta rápida: Sabías que te amo muchísimo? muejejeje💓</div>
+
           <div class="actions">
-            <button class="btnNext" id="go2">Siguiente ✨</button>
-            <button class="btnSoft" id="peek">Ver una pista 👀</button>
+            <button class="btnNext" id="tapBtn">Salta más rápido gatoooo 😺</button>
+            <button class="btnSoft" id="skip">Tengo algo que preguntarte... 🙀</button>
           </div>
         </section>
 
-        <!-- STEP 2 -->
+        <!-- STEP 2 (pregunta) -->
         <section class="panel" data-step="2">
-          <div class="cute">💘🐾💘</div>
-          <h2 class="big">¿Adivina qué? 😚</h2>
-          <p class="sub">Te preparé una invitación súper linda… y es para ti 💗</p>
-
-          <div class="info" id="infoBox">
-            <div class="row"><span class="label">🗓️ Día</span><span class="value" id="vDate">14/02 <small>(pero tú eliges si quieres otro)</small></span></div>
-            <div class="row"><span class="label">📍 Lugar</span><span class="value" id="vPlace">Donde tú quieras 💕</span></div>
-            <div class="row"><span class="label">🍓 Plan</span><span class="value" id="vPlan">Comer algo rico + paseíto + muchos besitos 😳</span></div>
-          </div>
-
-          <div class="actions">
-            <button class="btnSoft" id="back1">Atrás 🐾</button>
-            <button class="btnNext" id="go3">Siguiente 💞</button>
-          </div>
-        </section>
-
-        <!-- STEP 3 -->
-        <section class="panel" data-step="3">
-          <div class="cute">🐱✨💗✨🐱</div>
-          <h2 class="big">Y ahora sí… la pregunta 🥹</h2>
-          <p class="sub">Responde con un toque en la pantalla 👇</p>
+          <div class="cute">🐱✨💞✨🐱</div>
+          <h2 class="big">¿Quieres ser mi San Valentín? 🥺💓</h2>
+          <p class="sub">No hay tiempo para pensar, RESPONDEEEEEE</p>
 
           <div class="arena" id="arena">
-            <div class="hint" id="arenaHint">Elige una opción, mi amor 💖</div>
-            <button class="no" id="btnNo" aria-label="No">No 😶</button>
-            <button class="yes" id="btnYes" aria-label="Sí">SÍÍÍ 💖💖</button>
+            <div class="hint" id="arenaHint">Elige una opción!!!! 💗</div>
+            <button class="no" id="btnNo" aria-label="No">No 🤨</button>
+            <button class="yes" id="btnYes" aria-label="Sí">SÍ!! 💓💓💓</button>
           </div>
 
+          <div class="small">Un tip? Te conviene apretar "sí" muejeje 😼</div>
+
           <div class="actions">
-            <button class="btnSoft" id="back2">Atrás 🐾</button>
+            <button class="btnSoft" id="back1">Atrás 😾</button>
           </div>
         </section>
 
-        <!-- STEP 4 -->
-        <section class="panel" data-step="4">
+        <!-- STEP 3 (final) -->
+        <section class="panel" data-step="3">
           <div class="cute">🎉🐱💖🐱🎉</div>
-          <h2 class="big">¡SABÍA QUE DIRÍAS QUE SÍ! 😭💞</h2>
-          <p class="sub" id="finalText">Te amo muchísimo. Gracias por hacerme tan feliz 💖</p>
+          <h2 class="big">MUEJEJEJEJEJEJE 💓💓</h2>
+          <p class="final" id="finalMsg">Te amo muchísimo Denisse Lorca, gracias por hacerme tan feliz!! 💖</p>
+
+          <div class="info" id="infoBox">
+            <div class="row"><span class="label">🗓️ Día</span><span class="value" id="vDate">—</span></div>
+            <div class="row"><span class="label">📍 Lugar</span><span class="value" id="vPlace">—</span></div>
+            <div class="row"><span class="label">🍓 Plan</span><span class="value" id="vPlan">—</span></div>
+          </div>
 
           <div class="actions">
-            <button class="btnNext" id="share">Copiar mensaje para enviarte 💌</button>
-            <button class="btnSoft" id="restart">Ver de nuevo 🥰</button>
+            <button class="btnNext" id="copy">Copiar mensajito 💌</button>
+            <button class="btnSoft" id="restart">Ver de nuevo 🙀</button>
           </div>
         </section>
 
@@ -365,70 +503,312 @@
           <span class="dot on" id="d1"></span>
           <span class="dot" id="d2"></span>
           <span class="dot" id="d3"></span>
-          <span class="dot" id="d4"></span>
         </div>
-        <div class="small" id="stepTxt">Paso 1 de 4</div>
+        <div class="small2" id="stepTxt">Paso 1 de 3</div>
       </div>
     </div>
   </div>
 
   <script>
     // =======================
-    // PERSONALIZA AQUÍ 💖
+    // TEXTOS (del 2do código)
     // =======================
-    const NOMBRE = "Mi amor";      // ej: "Sofi", "Gabi", "Amor"
-    const DIA = "14/02";
-    const LUGAR = "Donde tú quieras 💕";
-    const PLAN = "Comer algo rico + paseíto + muchos besitos 😳";
-    const MENSAJE_FINAL = "Te amo muchísimo. Gracias por hacerme tan feliz 💖";
-    // =======================
+    const NOMBRE = "Denisse Lorca";
+    const DIA = "14/02/2026 🙀";
+    const LUGAR = "Donde sea pero juntitos jeje";
+    const PLAN = "Comer algo rico + paseíto pichina jej + muchos besitos 💓";
 
+    const toTxt = document.getElementById("toTxt");
+    const bar = document.getElementById("bar");
+    const caption = document.getElementById("caption");
+
+    const vDate  = document.getElementById("vDate");
+    const vPlace = document.getElementById("vPlace");
+    const vPlan  = document.getElementById("vPlan");
+    const finalMsg = document.getElementById("finalMsg");
+
+    toTxt.textContent = `Para el amor de mi vida 💓`;
+    vDate.textContent  = DIA;
+    vPlace.textContent = LUGAR;
+    vPlan.textContent  = PLAN;
+
+    // =======================
+    // Steps (diseño del 1ro)
+    // =======================
     const panels = Array.from(document.querySelectorAll(".panel"));
     const stepTxt = document.getElementById("stepTxt");
-    const miniTitle = document.getElementById("miniTitle");
-
-    const d1 = document.getElementById("d1");
-    const d2 = document.getElementById("d2");
-    const d3 = document.getElementById("d3");
-    const d4 = document.getElementById("d4");
-
-    const vDate = document.getElementById("vDate");
-    const vPlace = document.getElementById("vPlace");
-    const vPlan = document.getElementById("vPlan");
-    const finalText = document.getElementById("finalText");
-
-    miniTitle.textContent = `para ${NOMBRE} ✨`;
-    vDate.innerHTML = `${DIA} <small>(pero tú eliges si quieres otro)</small>`;
-    vPlace.textContent = LUGAR;
-    vPlan.textContent = PLAN;
-    finalText.textContent = MENSAJE_FINAL;
-
+    const dots = [document.getElementById("d1"), document.getElementById("d2"), document.getElementById("d3")];
     let step = 1;
+
+    function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
+
+    const arena = document.getElementById("arena");
+    const btnNo = document.getElementById("btnNo");
+    const arenaHint = document.getElementById("arenaHint");
+
+    const btnYes = document.getElementById("btnYes");
+
+    // ------------------------------
+    // Anti-missclick: si arrastra, no acepta el "Sí"
+    // ------------------------------
+    let downX = 0, downY = 0, moved = false;
+
+    arena.addEventListener("pointerdown", (e)=>{
+      downX = e.clientX; downY = e.clientY;
+      moved = false;
+    }, { passive: true });
+
+    arena.addEventListener("pointermove", (e)=>{
+      const dx = Math.abs(e.clientX - downX);
+      const dy = Math.abs(e.clientY - downY);
+      if(dx > 8 || dy > 8) moved = true;
+    }, { passive: true });
+
+    // si el usuario arrastró, NO ejecutar el click en "Sí"
+    btnYes.addEventListener("click", (e)=>{
+      if(moved){
+        e.preventDefault();
+        e.stopPropagation();
+        return;
+      }
+    }, true);
+
+
+    function moveNo(){
+      const a = arena.getBoundingClientRect();
+      const b = btnNo.getBoundingClientRect();
+      const pad = 10;
+      const maxX = a.width - b.width - pad;
+      const maxY = a.height - b.height - pad;
+      const x = clamp(Math.random()*maxX, pad, maxX);
+      const y = clamp(Math.random()*maxY, 56, maxY);
+      btnNo.style.left = x + "px";
+      btnNo.style.top = y + "px";
+    }
+    
+    function syncStageHeight(){
+      const active = document.querySelector(".panel.active");
+      if(!active || !stageEl) return;
+
+      // altura real del panel + padding top/bottom de stage
+      const h = active.offsetHeight + 18 + 18;
+      stageEl.style.height = h + "px";
+    }
+
     const setStep = (n) => {
       step = n;
       panels.forEach(p => p.classList.toggle("active", Number(p.dataset.step) === step));
-      stepTxt.textContent = `Paso ${step} de 4`;
-      [d1,d2,d3,d4].forEach((d,i)=> d.classList.toggle("on", i+1 === step));
+      stepTxt.textContent = `Paso ${step} de 3`;
+      dots.forEach((d,i)=> d.classList.toggle("on", i+1 === step));
+
+      if(step === 2) setTimeout(moveNo, 50);
+
+      // ✅ importante
+      requestAnimationFrame(syncStageHeight);
     };
 
-    // botones navegación
-    document.getElementById("go2").onclick = ()=> setStep(2);
-    document.getElementById("go3").onclick = ()=> setStep(3);
-    document.getElementById("back1").onclick = ()=> setStep(1);
-    document.getElementById("back2").onclick = ()=> setStep(2);
 
-    document.getElementById("peek").onclick = ()=>{
-      alert("Pista: es una invitación con amor, gatitos, besitos y un SÍ 🐱💖");
-    };
+    document.getElementById("skip").onclick = () => setStep(2);
+    document.getElementById("back1").onclick = () => setStep(1);
+
+    const stageEl = document.querySelector(".stage");
+
+    // ✅ llama al inicio
+    window.addEventListener("load", syncStageHeight);
+    window.addEventListener("resize", syncStageHeight);
+
+
+    // ======================
+    // Gatito: “más rápido” SIN saltar
+    // ======================
+    const scene = document.getElementById("scene");
+    const catWrap = document.getElementById("catWrap");
+    const tapBtn = document.getElementById("tapBtn");
+    const spark = document.getElementById("spark");
+
+    let energy = 12;
+    let speed = 0;
+    let tired = false;
+    let cooldownTimer = null;
+
+    function setProgress(){
+      const pct = Math.round(((12 - energy) / 12) * 100);
+      bar.style.width = pct + "%";
+    }
+    setProgress();
+
+    function popEmoji(mult = 1){
+      for(let k=0;k<mult;k++){
+        const e = document.createElement("div");
+        e.className = "floater";
+        const pool = ["🩵","💙","✨","😺","🐾","💓","🥺"];
+        e.textContent = pool[(Math.random()*pool.length)|0];
+        e.style.setProperty("--dx", (Math.random()*160 - 80) + "px");
+        e.style.setProperty("--dy", (-80 - Math.random()*120) + "px");
+        e.style.left = (40 + Math.random()*20) + "%";
+        e.style.top = (48 + Math.random()*10) + "%";
+        scene.appendChild(e);
+        setTimeout(()=> e.remove(), 950);
+      }
+    }
+
+    function applySpeed(){
+      const sparkDur = Math.max(0.55, 1.35 - speed * 0.07);
+      spark.style.setProperty("--sparkDur", sparkDur + "s");
+    }
+
+    const catImg = document.getElementById("cat");
+    const catStill = document.getElementById("catStill");
+
+    function freezeCat(){
+      catImg.style.display = "none";
+      catStill.style.display = "block";
+    }
+
+    function unfreezeCat(){
+      catStill.style.display = "none";
+      catImg.style.display = "block";
+    }
+
+
+    function becomeTired(){
+      tired = true;
+      freezeCat();
+      caption.textContent = "El gato se cansó de saltar, mucha chamba pipipipi,,,";
+      tapBtn.textContent = "El gatito está cansadito 🥺";
+      tapBtn.disabled = true;
+      setTimeout(()=> {
+        caption.textContent = "Bueno, ahora necesito que me ayudes a responder algo...";
+        document.getElementById("skip").textContent = "Ir a la pregunta omgg";
+      }, 1200);
+    }
+
+    function tap(){
+      if(tired) return;
+
+      catWrap.classList.remove("boost");
+      void catWrap.offsetWidth;
+      catWrap.classList.add("boost");
+
+      energy = Math.max(0, energy - 1);
+      speed = Math.min(12, speed + 1);
+      setProgress();
+      applySpeed();
+
+      popEmoji(speed >= 8 ? 2 : 1);
+
+      if(energy > 6) caption.textContent = "Dale más rápido, si es el rayo mcqueen jeje";
+      else if(energy > 2) caption.textContent = "MÁS RAPIDOOOOOO";
+      else caption.textContent = "PERATE WEY ME ESTOY CANSANDO AAAAAA";
+
+      if(energy <= 0){
+        becomeTired();
+      }else{
+        if(cooldownTimer) clearTimeout(cooldownTimer);
+        cooldownTimer = setTimeout(()=>{
+          speed = Math.max(0, speed - 2);
+          applySpeed();
+        }, 1800);
+      }
+    }
+
+    tapBtn.addEventListener("click", tap);
+    document.getElementById("cat").addEventListener("click", tap);
+
+    // NO escurridizo
+    btnNo.addEventListener("mouseenter", ()=>{ arenaHint.textContent="😳 ese botón es tímido…"; moveNo(); });
+    btnNo.addEventListener("pointerdown", (e)=>{ e.preventDefault(); moveNo(); });
+    btnNo.addEventListener("touchstart", (e)=>{ e.preventDefault(); moveNo(); }, {passive:false});
+    btnNo.addEventListener("focus", ()=>{ btnNo.blur(); moveNo(); });
 
     // =======================
-    // FLOATIES (corazones/gatitos)
+    // CONFETTI cuando dice SÍ (OPTIMIZADO 🩵)
     // =======================
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
+
+    let DPR = 1;
+    function getDprCap(){
+      // cap para no matar FPS en pantallas retina
+      const raw = window.devicePixelRatio || 1;
+      return Math.min(raw, 1.5);
+    }
+
+    function resize(){
+      DPR = getDprCap();
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      canvas.width  = Math.floor(w * DPR);
+      canvas.height = Math.floor(h * DPR);
+
+      // trabajamos en coordenadas CSS (no gigantes)
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    let confetti = [];
+    let running = true;
+
+    function burst(){
+      // cantidad adaptativa
+      const isSmall = window.innerWidth < 520;
+      const count = isSmall ? 80 : 120;
+
+      for(let i=0;i<count;i++){
+        confetti.push({
+          x: Math.random() * window.innerWidth,
+          y: -20 - Math.random() * 80,
+          vx: (Math.random()*2-1) * 2.2,
+          vy: 2.4 + Math.random()*3.6,
+          r: 9 + Math.random()*12, // tamaño en px CSS
+          rot: Math.random()*Math.PI*2,
+          vr: (Math.random()*2-1)*0.18,
+          emoji: Math.random() < 0.36 ? "🩵" : (Math.random() < 0.55 ? "✨" : "🐱"),
+          life: 0
+        });
+      }
+    }
+
+    function tick(){
+      if(!running) return;
+
+      // limpiar en coordenadas CSS
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      // filtrar los que salen
+      confetti = confetti.filter(p => p.y < window.innerHeight + 60);
+
+      // dibujar
+      for(const p of confetti){
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.life++;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot);
+
+        // usar una sola font “por partícula” (rápido suficiente con count ajustado)
+        ctx.font = `${p.r}px ${getComputedStyle(document.body).fontFamily}`;
+        ctx.fillText(p.emoji, -p.r*0.55, p.r*0.55);
+
+        ctx.restore();
+      }
+
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+
+    // Floaties global
     const floaties = document.getElementById("floaties");
-    const EMOJIS = ["💖","💘","💗","✨","🐱","🐾","🥺","🌸","💞"];
+    const EMOJIS = ["🩵","💙","✨","🐱","😽","🥺","💓"];
     function spawnFloater(){
       const el = document.createElement("div");
-      el.className = "floater";
+      el.className = "floaterGlobal";
       el.textContent = EMOJIS[(Math.random()*EMOJIS.length)|0];
       const left = Math.random()*100;
       const size = 14 + Math.random()*22;
@@ -440,111 +820,32 @@
       floaties.appendChild(el);
       setTimeout(()=> el.remove(), dur*1000);
     }
-    let floatTimer = setInterval(spawnFloater, 220);
+    let floatTimer = setInterval(spawnFloater, 240);
 
-    // =======================
-    // BOTÓN "NO" QUE SE ESCAPA 😈
-    // (funciona con mouse y con dedo)
-    // =======================
-    const arena = document.getElementById("arena");
-    const btnNo = document.getElementById("btnNo");
-    const arenaHint = document.getElementById("arenaHint");
-
-    function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
-
-    function moveNoButton(){
-      const a = arena.getBoundingClientRect();
-      const b = btnNo.getBoundingClientRect();
-
-      // limites dentro del arena (con padding)
-      const pad = 8;
-      const maxX = a.width - b.width - pad;
-      const maxY = a.height - b.height - pad;
-
-      // posición aleatoria
-      const x = clamp(Math.random()*maxX, pad, maxX);
-      const y = clamp(Math.random()*maxY, pad+18, maxY); // un poco más abajo para no tapar texto
-
-      btnNo.style.left = x + "px";
-      btnNo.style.top = y + "px";
-    }
-
-    // Se mueve cuando lo intentan tocar/atrapar
-    btnNo.addEventListener("mouseenter", () => { arenaHint.textContent = "😳 ay no, ese botón es tímido…"; moveNoButton(); });
-    btnNo.addEventListener("pointerenter", () => { moveNoButton(); });
-    btnNo.addEventListener("pointerdown", (e) => { e.preventDefault(); moveNoButton(); });
-    btnNo.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); }, {passive:false});
-    btnNo.addEventListener("focus", () => { btnNo.blur(); moveNoButton(); });
-
-    // inicial: ubicar "No" en un lugar lindo
-    moveNoButton();
-
-    // =======================
-    // CONFETTI cuando dice SÍ 🎉
-    // =======================
-    const canvas = document.getElementById("confetti");
-    const ctx = canvas.getContext("2d");
-    function resize(){
-      canvas.width = window.innerWidth * devicePixelRatio;
-      canvas.height = window.innerHeight * devicePixelRatio;
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
-    let confetti = [];
-    function burst(){
-      const count = 140;
-      for(let i=0;i<count;i++){
-        confetti.push({
-          x: Math.random()*canvas.width,
-          y: -20,
-          vx: (Math.random()*2-1) * 2.6,
-          vy: 2.5 + Math.random()*4.2,
-          r: 3 + Math.random()*5,
-          rot: Math.random()*Math.PI*2,
-          vr: (Math.random()*2-1)*0.2,
-          emoji: Math.random() < 0.35 ? "💖" : (Math.random()<0.5 ? "✨" : "🐱")
-        });
-      }
-    }
-    function tick(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      confetti = confetti.filter(p => p.y < canvas.height + 40);
-      for(const p of confetti){
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rot += p.vr;
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rot);
-        ctx.font = `${p.r*4}px ${getComputedStyle(document.body).fontFamily}`;
-        ctx.fillText(p.emoji, -p.r*2, p.r*2);
-        ctx.restore();
-      }
-      requestAnimationFrame(tick);
-    }
-    tick();
-
-    function celebrate(){
-      arenaHint.textContent = "AAAAA 💖💖💖";
+    // Aceptar (Sí) -> final
+    document.getElementById("btnYes").addEventListener("click", ()=>{
+      arenaHint.textContent = "AAAAA 🩵🩵🩵";
       burst();
+      // parar confetti luego de 4.5s para ahorrar CPU
+      setTimeout(()=> { confetti = []; }, 4500);
       clearInterval(floatTimer);
       floatTimer = setInterval(spawnFloater, 90);
-      setStep(4);
-    }
 
-    document.getElementById("btnYes").addEventListener("click", celebrate);
+      finalMsg.textContent = "¡SABÍA QUE DIRÍAS QUE SÍ MUEJEJEJ! 💓💓";
+      setStep(3);
+    });
 
-    // copiar mensaje
-    document.getElementById("share").addEventListener("click", async ()=>{
+    // Copiar mensaje
+    document.getElementById("copy").addEventListener("click", async ()=>{
       const msg =
 `💖 Hola ${NOMBRE} 💖
-¿Aceptas mi invitación? 🐱✨
+¿Quieres ser mi San Valentín? 🥺😺
+
 🗓️ Día: ${DIA}
 📍 Lugar: ${LUGAR}
 🍓 Plan: ${PLAN}
-Te amo 💞`;
+
+Ti amuu 💓`;
       try{
         await navigator.clipboard.writeText(msg);
         alert("¡Listo! Copié el mensajito 💌 (pégalo en WhatsApp)");
@@ -553,14 +854,24 @@ Te amo 💞`;
       }
     });
 
+    // Restart
     document.getElementById("restart").addEventListener("click", ()=>{
+      energy = 12;
+      speed = 0;
+      tired = false;
+      tapBtn.disabled = false;
+      tapBtn.textContent = "Tocar gatito 😺✨";
+      caption.textContent = "Toca al gatito para que se ponga más contentito 😳💞";
+      bar.style.width = "0%";
+      spark.style.setProperty("--sparkDur", "1.35s");
+      if(cooldownTimer) clearTimeout(cooldownTimer);
+      setProgress();
+      unfreezeCat();
       setStep(1);
-      moveNoButton();
     });
 
-    // Tip: enter también acepta (por si está en compu)
     window.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter" && step === 3) celebrate();
+      if(e.key === "Enter" && step === 2) document.getElementById("btnYes").click();
     });
   </script>
 </body>
